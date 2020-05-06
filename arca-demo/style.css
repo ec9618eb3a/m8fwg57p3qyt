@@ -1,0 +1,23 @@
+
+body {
+ text-align:center;
+ margin: 0px 0px;
+}
+
+#container {
+    min-width: 94%;
+    margin: 3% 3%;
+    position: absolute;
+    top: 500px;
+    left: auto;
+}
+
+.game {
+    margin: 20px 0px;
+}
+
+.goBtn {
+    position: absolute;
+    top: 200px;
+    left: 325px;
+}

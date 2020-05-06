@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <title> 馳風競艇</title>
+
+  <!--http://www.html5rocks.com/en/mobile/mobifying/-->
+  <meta name="viewport"
+        content="width=device-width,user-scalable=no,initial-scale=1, minimum-scale=1,maximum-scale=1"/>
+
+  <!--https://developer.apple.com/library/safari/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/MetaTags.html-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="format-detection" content="telephone=no">
+
+  <!-- force webkit on 360 -->
+  <meta name="renderer" content="webkit"/>
+  <meta name="force-rendering" content="webkit"/>
+  <!-- force edge on IE -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <meta name="msapplication-tap-highlight" content="no">
+
+  <!-- force full screen on some browser -->
+  <meta name="full-screen" content="yes"/>
+  <meta name="x5-fullscreen" content="true"/>
+  <meta name="360-fullscreen" content="true"/>
+  
+  <!-- force screen orientation on some browser -->
+  <meta name="screen-orientation" content=""/>
+  <meta name="x5-orientation" content="">
+
+  <!--fix fireball/issues/3568 -->
+  <!--<meta name="browsermode" content="application">-->
+  <meta name="x5-page-mode" content="app">
+
+  <!--<link rel="apple-touch-icon" href=".png" />-->
+  <!--<link rel="apple-touch-icon-precomposed" href=".png" />-->
+
+  <link rel="stylesheet" type="text/css" href="style-mobile.18247.css"/>
+  
+
+</head>
+<body>
+  <canvas id="GameCanvas" oncontextmenu="event.preventDefault()" tabindex="0"></canvas>
+  <div id="cc-splash">
+	<div id="splash-container">
+		<img id="splash-img" style="visibility:hidden" src=""></img>
+		<div id="progress-bar" class="cc-progress-bar cc-stripes">
+			<span style="width: 0%"></span>
+		</div>
+	</div>
+  </div>
+<script src="src/settings.c2976.js" charset="utf-8"></script>
+<script src="main.384db.js" charset="utf-8"></script>
+<script type="text/javascript">
+
+var getUrlParameter = function (sParam) {
+	var sPageURL = window.location.search.substring(1),
+	sURLVariables = sPageURL.split('&'),
+	sParameterName,
+	i;
+	
+	for (i = 0; i < sURLVariables.length; i++) {
+		sParameterName = sURLVariables[i].split('=');
+		
+		if (sParameterName[0] === sParam) {
+			return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+		}
+	}
+};
+
+(function () {
+    // open web debugger console
+    if (typeof VConsole !== 'undefined') {
+        window.vConsole = new VConsole();
+	}
+	
+	var splashImg = document.getElementById('splash-img');
+	var container = document.getElementById('splash-container');;
+		
+	// 調整縮放尺寸
+	function resize (splashImg, container) {
+		// 改變容器寬度
+		container.style.width = splashImg.offsetWidth + "px";
+
+		// 縮放比 = 視窗內高(寬)度 / 圖片尺寸高(寬)度
+		let zoom;
+		let imgRatio = splashImg.offsetHeight / splashImg.offsetWidth;
+		let windowRatio = window.innerHeight / window.innerWidth;
+
+		if (imgRatio > windowRatio){
+			zoom = window.innerHeight / splashImg.offsetHeight;
+		}else{
+			zoom = window.innerWidth / splashImg.offsetWidth;
+			container.style.marginTop = ((window.innerHeight - splashImg.offsetHeight*zoom)/2/zoom) + "px";
+		}
+
+		// 改變容器縮放
+		container.style.zoom = zoom;
+	}
+
+	resize(splashImg, container);
+
+	// 取得語言參數
+	var language = getUrlParameter('lang');
+
+	// 預設語言參數
+	if (!language) language = "cn";
+
+	// 依照語言設置封面圖
+	splashImg.setAttribute("src", "./splashes/splash_"+language+".jpg")
+
+	splashImg.onload = ()=>{
+		
+		// 顯示封面圖
+		splashImg.style.visibility = "visible";
+
+		resize(splashImg, container);
+		
+	};
+
+    var cocos2d = document.createElement('script');
+    cocos2d.async = true;
+    cocos2d.src = window._CCSettings.debug ? 'cocos2d-js.js' : 'cocos2d-js-min.3a02f.js';
+
+    var engineLoaded = function () {
+        document.body.removeChild(cocos2d);
+        cocos2d.removeEventListener('load', engineLoaded, false);
+		window.boot();
+    };
+    cocos2d.addEventListener('load', engineLoaded, false);
+    document.body.appendChild(cocos2d);
+})();
+</script>
+</body>
+</html>
